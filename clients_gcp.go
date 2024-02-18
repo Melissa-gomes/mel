@@ -22,7 +22,7 @@ func Pubsub(ctx context.Context, conf PubsubConfig) (*pubsub.Client, error) {
 
 	c, err := pubsub.NewClient(ctx, conf.ProjectId)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("error to init pubsub client: %s", err.Error()))
+		return nil, fmt.Errorf("error to init pubsub client: %s", err.Error())
 	}
 
 	return c, nil
@@ -39,7 +39,7 @@ func PubsubTopic(ctx context.Context, conf PubsubConfig) (*pubsub.Topic, error) 
 
 	c, err := pubsub.NewClient(ctx, conf.ProjectId)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("error to init pubsub client: %s", err.Error()))
+		return nil, fmt.Errorf("error to init pubsub client: %s", err.Error())
 	}
 
 	t := c.Topic(conf.TopicId)
@@ -57,7 +57,7 @@ func PubsubSubscription(ctx context.Context, conf PubsubConfig) (*pubsub.Subscri
 
 	c, err := pubsub.NewClient(ctx, conf.ProjectId)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("error to init pubsub client: %s", err.Error()))
+		return nil, fmt.Errorf("error to init pubsub client: %s", err.Error())
 	}
 
 	s := c.Subscription(conf.SubscriptionId)
@@ -67,7 +67,7 @@ func PubsubSubscription(ctx context.Context, conf PubsubConfig) (*pubsub.Subscri
 func BigQueryClient(ctx context.Context, projectId string) (*bigquery.Client, error) {
 	bqC, err := bigquery.NewClient(ctx, projectId)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("error to init bigquery client: %s", err.Error()))
+		return nil, fmt.Errorf("error to init bigquery client: %s", err.Error())
 	}
 
 	return bqC, nil
