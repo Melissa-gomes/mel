@@ -24,7 +24,7 @@ func ValidCpfFormat(data string, typeValidation int) bool {
 	return false
 }
 
-func ClenCpf(data string) (string, error) {
+func CleanCpf(data string) (string, error) {
 	if len(data) < 11 {
 		return "", errors.New("invalid length to be cpf")
 	}
