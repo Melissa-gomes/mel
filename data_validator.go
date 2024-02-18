@@ -2,8 +2,10 @@ package mel
 
 import (
 	"errors"
+	"fmt"
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 var (
@@ -11,7 +13,24 @@ var (
 	WITHOUT_FORMATTING = 2
 )
 
+func invalidCharacter(data string) bool {
+	hasNonDigit := false
+
+	for _, char := range data {
+		if !unicode.IsDigit(char) {
+			hasNonDigit = true
+			break
+		}
+	}
+
+	return hasNonDigit
+}
+
 func ValidCpfFormat(data string, typeValidation int) bool {
+	if invalidCharacter(data) {
+		return false
+	}
+
 	if typeValidation == WITHOUT_FORMATTING {
 		return len(data) == 11
 	}
@@ -29,6 +48,10 @@ func CleanCpf(data string) (string, error) {
 		return "", errors.New("invalid length to be cpf")
 	}
 
+	if invalidCharacter(data) {
+		return "", errors.New("invalid character in cpf")
+	}
+
 	caracteresIndesejados := ".- "
 
 	data = strings.Map(func(r rune) rune {
@@ -39,4 +62,20 @@ func CleanCpf(data string) (string, error) {
 	}, data)
 
 	return data, nil
+}
+
+func FormatCpf(data string) (string, error) {
+	if len(data) > 11 {
+		return "", errors.New("invalid length to be cpf")
+	}
+
+	if invalidCharacter(data) {
+		return "", errors.New("invalid character in cpf")
+	}
+
+	re := regexp.MustCompile(`^(\d{3})(\d{3})(\d{3})(\d{2})$`)
+	matches := re.FindStringSubmatch(data)
+	cpfFormatted := fmt.Sprintf("%s.%s.%s-%s", matches[1], matches[2], matches[3], matches[4])
+
+	return cpfFormatted, nil
 }
