@@ -27,11 +27,10 @@ func invalidCharacter(data string) bool {
 }
 
 func ValidCpfFormat(data string, typeValidation int) bool {
-	if invalidCharacter(data) {
-		return false
-	}
-
 	if typeValidation == WITHOUT_FORMATTING {
+		if invalidCharacter(data) {
+			return false
+		}
 		return len(data) == 11
 	}
 
@@ -46,10 +45,6 @@ func ValidCpfFormat(data string, typeValidation int) bool {
 func CleanCpf(data string) (string, error) {
 	if len(data) < 11 {
 		return "", errors.New("invalid length to be cpf")
-	}
-
-	if invalidCharacter(data) {
-		return "", errors.New("invalid character in cpf")
 	}
 
 	caracteresIndesejados := ".- "
@@ -69,9 +64,9 @@ func FormatCpf(data string) (string, error) {
 		return "", errors.New("invalid length to be cpf")
 	}
 
-	if invalidCharacter(data) {
-		return "", errors.New("invalid character in cpf")
-	}
+	// if invalidCharacter(data) {
+	// 	return "", errors.New("invalid character in cpf")
+	// }
 
 	re := regexp.MustCompile(`^(\d{3})(\d{3})(\d{3})(\d{2})$`)
 	matches := re.FindStringSubmatch(data)
